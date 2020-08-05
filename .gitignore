@@ -3,5 +3,7 @@
 /.idea
 /data/reviews.test.json
 /data/reviews.json
+/data/ratings.test.json
+/data/ratings.json
 /obj/test
 /docker/id_rsa*
