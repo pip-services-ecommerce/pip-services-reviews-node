@@ -1,1 +1,1 @@
-// export { ReviewsHttpServiceV1 } from './ReviewsHttpServiceV1';
+export { ReviewsHttpServiceV1 } from './ReviewsHttpServiceV1';

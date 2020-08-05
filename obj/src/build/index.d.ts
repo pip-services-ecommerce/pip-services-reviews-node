@@ -1,0 +1,1 @@
+export { ReviewsServiceFactory } from './ReviewsServiceFactory';

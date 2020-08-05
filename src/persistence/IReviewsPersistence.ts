@@ -12,12 +12,12 @@ export interface IReviewsPersistence extends IGetter<ReviewV1, string> {
 
     getOneById(correlationId: string, id: string, 
         callback: (err: any, item: ReviewV1) => void): void;
+        
+    create(correlation_id: string, review: ReviewV1, 
+        callback?: (err: any, review: ReviewV1) => void): void;
 
-    set(correlationId: string, item: ReviewV1, 
-        callback: (err: any, rating: RatingV1) => void): void;
-
-    increment(correlationId: string, rating: RatingV1, 
-        callback: (err: any, rating: RatingV1) => void): void;
+    update(correlation_id: string, review: ReviewV1, 
+        callback?: (err: any, review: ReviewV1) => void): void;
 
     deleteById(correlationId: string, id: string,
         callback: (err: any, item: ReviewV1) => void): void;

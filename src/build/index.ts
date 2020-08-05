@@ -1,1 +1,1 @@
-// export { ReviewsServiceFactory } from './ReviewsServiceFactory';
+export { ReviewsServiceFactory } from './ReviewsServiceFactory';

@@ -1,57 +1,57 @@
-// let _ = require('lodash');
+let _ = require('lodash');
 
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { DataPage } from 'pip-services3-commons-node';
-// import { TagsProcessor } from 'pip-services3-commons-node';
-// import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { TagsProcessor } from 'pip-services3-commons-node';
+import { IdentifiableMongoDbPersistence } from 'pip-services3-mongodb-node';
 
-// import { ReviewV1 } from '../data/version1/ReviewV1';
-// import { IReviewsPersistence } from './IReviewsPersistence';
+import { ReviewV1 } from '../data/version1/ReviewV1';
+import { IReviewsPersistence } from './IReviewsPersistence';
 
-// export class ReviewsMongoDbPersistence
-//     extends IdentifiableMongoDbPersistence<ReviewV1, string>
-//     implements IReviewsPersistence {
+export class ReviewsMongoDbPersistence
+    extends IdentifiableMongoDbPersistence<ReviewV1, string>
+    implements IReviewsPersistence {
 
-//     constructor() {
-//         super('reviews');
-//         super.ensureIndex({ customer_id: 1 });
-//     }
+    constructor() {
+        super('reviews');
+        super.ensureIndex({ product_id: 1 });
+    }
     
-//     private composeFilter(filter: any) {
-//         filter = filter || new FilterParams();
+    private composeFilter(filter: any) {
+        filter = filter || new FilterParams();
 
-//         let criteria = [];
+        let criteria = [];
 
-//         let id = filter.getAsNullableString('id');
-//         if (id != null)
-//             criteria.push({ _id: id });
+        let id = filter.getAsNullableString('id');
+        if (id != null)
+            criteria.push({ _id: id });
 
-//         // Filter ids
-//         let ids = filter.getAsObject('ids');
-//         if (_.isString(ids))
-//             ids = ids.split(',');
-//         if (_.isArray(ids))
-//             criteria.push({ _id: { $in: ids } });
-            
-//         let state = filter.getAsNullableString('state');
-//         if (state != null)
-//             criteria.push({ state: state });
+        // Filter ids
+        let ids = filter.getAsObject('ids');
+        if (_.isString(ids))
+            ids = ids.split(',');
+        if (_.isArray(ids))
+            criteria.push({ _id: { $in: ids } });
 
-//         let customerId = filter.getAsNullableString('customer_id');
-//         if (customerId != null)
-//             criteria.push({ customer_id: customerId });
+        let partyId = filter.getAsNullableString('party_id');
+        if (partyId != null)
+            criteria.push({ party_id: partyId });
                 
-//         let saved = filter.getAsNullableBoolean('saved');
-//         if (saved != null)
-//             criteria.push({ saved: saved });
-
-//         return criteria.length > 0 ? { $and: criteria } : null;
-//     }
+        let productId = filter.getAsNullableString('product_id');
+        if (productId != null)
+            criteria.push({ product_id: productId });
+            
+        let fullReview = filter.getAsNullableBoolean('full_review');
+        if (fullReview != null)
+            criteria.push({ full_review: fullReview });
     
-//     public getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams,
-//         callback: (err: any, page: DataPage<ReviewV1>) => void): void {
-//         super.getPageByFilter(correlationId, this.composeFilter(filter), paging, null, null, callback);
-//     }
+        return criteria.length > 0 ? { $and: criteria } : null;
+    }
+    
+    public getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams,
+        callback: (err: any, page: DataPage<ReviewV1>) => void): void {
+        super.getPageByFilter(correlationId, this.composeFilter(filter), paging, null, null, callback);
+    }
 
-// }
+}

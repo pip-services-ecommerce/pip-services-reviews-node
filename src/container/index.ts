@@ -1,2 +1,2 @@
-// export { ReviewsProcess } from './ReviewsProcess';
-// export { ReviewsLambdaFunction } from './ReviewsLambdaFunction';
+export { ReviewsProcess } from './ReviewsProcess';
+export { ReviewsLambdaFunction } from './ReviewsLambdaFunction';

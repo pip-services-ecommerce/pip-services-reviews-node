@@ -1,0 +1,31 @@
+import { ConfigParams, SortParams } from 'pip-services3-commons-node';
+import { IConfigurable } from 'pip-services3-commons-node';
+import { IReferences } from 'pip-services3-commons-node';
+import { IReferenceable } from 'pip-services3-commons-node';
+import { FilterParams } from 'pip-services3-commons-node';
+import { PagingParams } from 'pip-services3-commons-node';
+import { DataPage } from 'pip-services3-commons-node';
+import { ICommandable } from 'pip-services3-commons-node';
+import { CommandSet } from 'pip-services3-commons-node';
+import { ReviewV1 } from '../data/version1/ReviewV1';
+import { RatingV1 } from '../data/version1/RatingV1';
+import { IReviewsController } from './IReviewsController';
+export declare class ReviewsController implements IConfigurable, IReferenceable, ICommandable, IReviewsController {
+    private static _defaultConfig;
+    private _dependencyResolver;
+    private _reviewsPersistence;
+    private _ratingsPersistence;
+    private _commandSet;
+    constructor();
+    configure(config: ConfigParams): void;
+    setReferences(references: IReferences): void;
+    getCommandSet(): CommandSet;
+    getReviews(correlationId: string, filter: FilterParams, paging: PagingParams, sorting: SortParams, callback: (err: any, page: DataPage<ReviewV1>) => void): void;
+    getReviewById(correlationId: string, reviewId: string, callback: (err: any, review: ReviewV1) => void): void;
+    getPartyReview(correlationId: string, partyId: string, productId: string, callback: (err: any, review: ReviewV1) => void): void;
+    getProductRating(correlationId: string, productId: string, callback: (err: any, rating: RatingV1) => void): void;
+    submitReview(correlationId: string, review: ReviewV1, callback: (err: any, rating: RatingV1) => void): void;
+    reportHelpful(correlationId: string, reviewId: string, partyId: string, callback: (err: any, review: ReviewV1) => void): void;
+    reportAbuse(correlationId: string, reviewId: string, partyId: string, callback: (err: any, review: ReviewV1) => void): void;
+    deleteReviewById(correlationId: string, reviewId: string, callback: (err: any, rating: RatingV1) => void): void;
+}

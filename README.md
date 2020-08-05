@@ -38,56 +38,46 @@ class RatingV1 {
     public country_code: string; // ISO 3166-1
 }
 
-class ReviewV1 implements IStringIdentifiable {
+export class ReviewV1 implements IStringIdentifiable {
     public id: string;
-    public customer_id: string;
+    public product_id: string;
+    public party_id: string;
 
     public create_time?: Date;
     public update_time?: Date;
     
-    public type?: string;
-    public number?: string;
-    public expire_month?: number;
-    public expire_year?: number;
-    public first_name?: string;
-    public last_name?: string;
-    public billing_address?: RatingV1;
-    public state?: string;
-    public ccv?: string;
-
-    public name?: string;
-    public saved?: boolean;
-    public default?: boolean;
-}
-
-class ReviewTypeV1 {
-    public static readonly Visa = "visa";
-    public static readonly Masterreview = "masterreview";
-    public static readonly AmericanExpress = "amex";
-    public static readonly Discover = "discover";
-    public static readonly Maestro = "maestro";
-}
-
-class ReviewStateV1 {
-    public static Ok: string = "ok";
-    public static Expired: string = "expired";
+    public rating: number;
+    public testimonial?: string;
+    public full_review?: boolean;    
+ 
+    public helpful_count?: number;
+    public abuse_count?: number;
 }
 
 interface IReviewsV1 {
-    getReviews(correlationId: string, filter: FilterParams, paging: PagingParams, 
+    getReviews(correlationId: string, filter: FilterParams, paging: PagingParams, sorting: SortParams,
         callback: (err: any, page: DataPage<ReviewV1>) => void): void;
 
-    getReviewById(correlationId: string, review_id: string, 
+    getReviewById(correlationId: string, reviewId: string,
         callback: (err: any, review: ReviewV1) => void): void;
 
-    createReview(correlationId: string, review: ReviewV1, 
+    getPartyReview(correlationId: string, partyId: string, productId: string,
         callback: (err: any, review: ReviewV1) => void): void;
 
-    updateReview(correlationId: string, review: ReviewV1, 
+    getProductRating(correlationId: string, productId: string,
+        callback: (err: any, rating: RatingV1) => void): void;
+        
+    submitReview(correlationId: string, review: ReviewV1, 
+        callback: (err: any, rating: RatingV1) => void): void;
+
+    reportHelpful(correlationId: string, reviewId: string, partyId: string,
         callback: (err: any, review: ReviewV1) => void): void;
 
-    deleteReviewById(correlationId: string, review_id: string,
+    reportAbuse(correlationId: string, reviewId: string, partyId: string,
         callback: (err: any, review: ReviewV1) => void): void;
+            
+    deleteReviewById(correlationId: string, reviewId: string,
+        callback: (err: any, rating: RatingV1) => void): void;
 }
 ```
 
@@ -115,8 +105,11 @@ Example of microservice configuration
 - descriptor: "pip-services-commons:logger:console:default:1.0"
   level: "trace"
 
-- descriptor: "pip-services-reviews:persistence:file:default:1.0"
+- descriptor: "pip-services-reviews:persistence:file:reviews:1.0"
   path: "./data/reviews.json"
+
+- descriptor: "pip-services-reviews:persistence:file:ratings:1.0"
+  path: "./data/ratings.json"
 
 - descriptor: "pip-services-reviews:controller:default:default:1.0"
 
@@ -190,30 +183,18 @@ Now the client is ready to perform operations
 ```javascript
 // Create a new review
 var review = {
-    customer_id: '1',
-    type: 'visa',
-    number: '1111111111111111',
-    expire_month: 1,
-    expire_year: 2021,
-    first_name: 'Bill',
-    last_name: 'Gates',
-    billing_address: {
-        line1: '2345 Swan Rd',
-        city: 'Tucson',
-        postal_code: '85710',
-        country_code: 'US'
-    },
-    ccv: '213',
-    name: 'Test Review 1',
-    saved: true,
-    default: true,
-    state: 'ok'
+    id: '1',
+    party_id: '2',
+    product_id: '1', 
+    rating: 3,
+    testimonial: 'No delivery to my country',
+    full_review: false
 };
 
-client.createReview(
+client.submitReview(
     null,
     review,
-    function (err, review) {
+    function (err, rating) {
         ...
     }
 );
@@ -224,8 +205,8 @@ client.createReview(
 client.getReviews(
     null,
     {
-        customer_id: '1',
-        state: 'ok'
+        party_id: '2',
+        product_id: '1'
     },
     {
         total: true,
@@ -240,4 +221,4 @@ client.getReviews(
 
 ## Acknowledgements
 
-This microservice was created and currently maintained by *Sergey Seroukhov*.
+This microservice was created and currently maintained by *Denis Kuznetsov*.

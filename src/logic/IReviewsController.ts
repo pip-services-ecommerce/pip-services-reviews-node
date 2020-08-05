@@ -10,24 +10,24 @@ export interface IReviewsController {
     getReviews(correlationId: string, filter: FilterParams, paging: PagingParams, sorting: SortParams,
         callback: (err: any, page: DataPage<ReviewV1>) => void): void;
 
-    getReviewById(correlationId: string, review_id: string,
+    getReviewById(correlationId: string, reviewId: string,
         callback: (err: any, review: ReviewV1) => void): void;
 
-    getPartyReview(correlationId: string, party_id: string, product_id: string,
+    getPartyReview(correlationId: string, partyId: string, productId: string,
         callback: (err: any, review: ReviewV1) => void): void;
 
-    getProductRating(correlationId: string, product_id: string,
+    getProductRating(correlationId: string, productId: string,
         callback: (err: any, rating: RatingV1) => void): void;
         
     submitReview(correlationId: string, review: ReviewV1, 
         callback: (err: any, rating: RatingV1) => void): void;
 
-    reportHelpful(correlationId: string, review_id: string, party_id: string,
+    reportHelpful(correlationId: string, reviewId: string, partyId: string,
         callback: (err: any, review: ReviewV1) => void): void;
 
-    reportAbuse(correlationId: string, review_id: string, party_id: string,
+    reportAbuse(correlationId: string, reviewId: string, partyId: string,
         callback: (err: any, review: ReviewV1) => void): void;
             
-    deleteReviewById(correlationId: string, review_id: string,
+    deleteReviewById(correlationId: string, reviewId: string,
         callback: (err: any, rating: RatingV1) => void): void;
 }
