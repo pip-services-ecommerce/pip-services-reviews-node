@@ -1,6 +1,6 @@
 let async = require('async');
 
-import { ConfigParams, SortParams, IdGenerator, Descriptor } from 'pip-services3-commons-node';
+import { ConfigParams, SortParams, IdGenerator, Descriptor, NotFoundException } from 'pip-services3-commons-node';
 import { IConfigurable } from 'pip-services3-commons-node';
 import { IReferences } from 'pip-services3-commons-node';
 import { IReferenceable } from 'pip-services3-commons-node';
@@ -102,6 +102,51 @@ export class ReviewsController implements IConfigurable, IReferenceable, IComman
         });
     }
 
+    public updateReview(correlationId: string, review: ReviewV1,
+        callback: (err: any, rating: RatingV1) => void): void {
+        let oldRating = 0;
+        let rating: RatingV1;
+
+        async.series([
+            (callback) => {
+                this._reviewsPersistence.getOneById(correlationId, review.id, (err, data) => {
+                    if (err != null || data == null) {
+                        err = new NotFoundException(
+                            correlationId,
+                            'NOT_FOUND',
+                            'Review ' + review.id + ' was not found'
+                        )
+                        callback(err);
+                        return;
+                    }
+
+                    oldRating = data.rating;
+                    callback(err);
+                });
+            },
+            (callback) => {
+                this._ratingsPersistence.decrement(correlationId, review.product_id, oldRating, (err: any, data: RatingV1) => {
+                    callback(err);
+                });
+            },
+            (callback) => {
+                review.update_time = new Date(Date.now());
+                this._reviewsPersistence.update(correlationId, review, (err, data) => {
+                    callback(err);
+                });
+            },
+            (callback) => {
+                this._ratingsPersistence.increment(correlationId, review.product_id, review.rating, (err: any, data: RatingV1) => {
+                    rating = data;
+                    callback(err);
+                });
+            },
+        ], (err) => {
+            callback(err, rating);
+        });
+
+    }
+
     public reportHelpful(correlationId: string, reviewId: string, partyId: string, callback: (err: any, review: ReviewV1) => void): void {
         let review: ReviewV1;
         async.series([
@@ -156,7 +201,7 @@ export class ReviewsController implements IConfigurable, IReferenceable, IComman
                 });
             },
             (callback) => {
-                this._ratingsPersistence.increment(correlationId, review.product_id, review.rating, (err: any, data: RatingV1) => {
+                this._ratingsPersistence.decrement(correlationId, review.product_id, review.rating, (err: any, data: RatingV1) => {
                     rating = data;
                     callback(err);
                 });

@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ReviewsMemoryPersistence_1 = require("./ReviewsMemoryPersistence");
-exports.ReviewsMemoryPersistence = ReviewsMemoryPersistence_1.ReviewsMemoryPersistence;
+Object.defineProperty(exports, "ReviewsMemoryPersistence", { enumerable: true, get: function () { return ReviewsMemoryPersistence_1.ReviewsMemoryPersistence; } });
 var ReviewsFilePersistence_1 = require("./ReviewsFilePersistence");
-exports.ReviewsFilePersistence = ReviewsFilePersistence_1.ReviewsFilePersistence;
+Object.defineProperty(exports, "ReviewsFilePersistence", { enumerable: true, get: function () { return ReviewsFilePersistence_1.ReviewsFilePersistence; } });
 var ReviewsMongoDbPersistence_1 = require("./ReviewsMongoDbPersistence");
-exports.ReviewsMongoDbPersistence = ReviewsMongoDbPersistence_1.ReviewsMongoDbPersistence;
+Object.defineProperty(exports, "ReviewsMongoDbPersistence", { enumerable: true, get: function () { return ReviewsMongoDbPersistence_1.ReviewsMongoDbPersistence; } });
 var RatingsMemoryPersistence_1 = require("./RatingsMemoryPersistence");
-exports.RatingsMemoryPersistence = RatingsMemoryPersistence_1.RatingsMemoryPersistence;
+Object.defineProperty(exports, "RatingsMemoryPersistence", { enumerable: true, get: function () { return RatingsMemoryPersistence_1.RatingsMemoryPersistence; } });
 var RatingsFilePersistence_1 = require("./RatingsFilePersistence");
-exports.RatingsFilePersistence = RatingsFilePersistence_1.RatingsFilePersistence;
+Object.defineProperty(exports, "RatingsFilePersistence", { enumerable: true, get: function () { return RatingsFilePersistence_1.RatingsFilePersistence; } });
 var RatingsMongoDbPersistence_1 = require("./RatingsMongoDbPersistence");
-exports.RatingsMongoDbPersistence = RatingsMongoDbPersistence_1.RatingsMongoDbPersistence;
+Object.defineProperty(exports, "RatingsMongoDbPersistence", { enumerable: true, get: function () { return RatingsMongoDbPersistence_1.RatingsMongoDbPersistence; } });
 //# sourceMappingURL=index.js.map

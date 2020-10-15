@@ -8,6 +8,7 @@ export declare class ReviewsCommandSet extends CommandSet {
     private makeGetPartyReviewCommand;
     private makeGetProductRatingCommand;
     private makeSubmitReviewCommand;
+    private makeUpdateReviewCommand;
     private makeReportHelpfulCommand;
     private makeReportAbuseCommand;
     private makeDeleteReviewByIdCommand;

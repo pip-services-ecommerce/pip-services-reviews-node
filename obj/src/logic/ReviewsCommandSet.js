@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReviewsCommandSet = void 0;
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_commons_node_2 = require("pip-services3-commons-node");
 const pip_services3_commons_node_3 = require("pip-services3-commons-node");
@@ -19,6 +20,7 @@ class ReviewsCommandSet extends pip_services3_commons_node_1.CommandSet {
         this.addCommand(this.makeGetPartyReviewCommand());
         this.addCommand(this.makeGetProductRatingCommand());
         this.addCommand(this.makeSubmitReviewCommand());
+        this.addCommand(this.makeUpdateReviewCommand());
         this.addCommand(this.makeReportHelpfulCommand());
         this.addCommand(this.makeReportAbuseCommand());
         this.addCommand(this.makeDeleteReviewByIdCommand());
@@ -60,6 +62,13 @@ class ReviewsCommandSet extends pip_services3_commons_node_1.CommandSet {
             .withRequiredProperty('review', new ReviewV1Schema_1.ReviewV1Schema()), (correlationId, args, callback) => {
             let review = args.get("review");
             this._logic.submitReview(correlationId, review, callback);
+        });
+    }
+    makeUpdateReviewCommand() {
+        return new pip_services3_commons_node_2.Command("update_review", new pip_services3_commons_node_5.ObjectSchema(true)
+            .withRequiredProperty('review', new ReviewV1Schema_1.ReviewV1Schema()), (correlationId, args, callback) => {
+            let review = args.get("review");
+            this._logic.updateReview(correlationId, review, callback);
         });
     }
     makeReportHelpfulCommand() {

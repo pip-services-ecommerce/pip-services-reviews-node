@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RatingsMemoryPersistence = void 0;
 let _ = require('lodash');
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_data_node_1 = require("pip-services3-data-node");
@@ -42,53 +43,53 @@ class RatingsMemoryPersistence extends pip_services3_data_node_1.IdentifiableMem
         var _a, _b, _c, _d, _e, _f, _g;
         switch (rating) {
             case 0:
-                item.rating_0_count = (_a = item.rating_0_count, (_a !== null && _a !== void 0 ? _a : 0)) + 1;
+                item.rating_0_count = ((_a = item.rating_0_count) !== null && _a !== void 0 ? _a : 0) + 1;
                 break;
             case 1:
-                item.rating_1_count = (_b = item.rating_1_count, (_b !== null && _b !== void 0 ? _b : 0)) + 1;
+                item.rating_1_count = ((_b = item.rating_1_count) !== null && _b !== void 0 ? _b : 0) + 1;
                 break;
             case 2:
-                item.rating_2_count = (_c = item.rating_2_count, (_c !== null && _c !== void 0 ? _c : 0)) + 1;
+                item.rating_2_count = ((_c = item.rating_2_count) !== null && _c !== void 0 ? _c : 0) + 1;
                 break;
             case 3:
-                item.rating_3_count = (_d = item.rating_3_count, (_d !== null && _d !== void 0 ? _d : 0)) + 1;
+                item.rating_3_count = ((_d = item.rating_3_count) !== null && _d !== void 0 ? _d : 0) + 1;
                 break;
             case 4:
-                item.rating_4_count = (_e = item.rating_4_count, (_e !== null && _e !== void 0 ? _e : 0)) + 1;
+                item.rating_4_count = ((_e = item.rating_4_count) !== null && _e !== void 0 ? _e : 0) + 1;
                 break;
             case 5:
-                item.rating_5_count = (_f = item.rating_5_count, (_f !== null && _f !== void 0 ? _f : 0)) + 1;
+                item.rating_5_count = ((_f = item.rating_5_count) !== null && _f !== void 0 ? _f : 0) + 1;
                 break;
             default:
                 break;
         }
-        item.total_count = (_g = item.total_count, (_g !== null && _g !== void 0 ? _g : 0)) + 1;
+        item.total_count = ((_g = item.total_count) !== null && _g !== void 0 ? _g : 0) + 1;
     }
     decrementRating(item, rating) {
         var _a, _b, _c, _d, _e, _f, _g;
         switch (rating) {
             case 0:
-                item.rating_0_count = (_a = item.rating_0_count, (_a !== null && _a !== void 0 ? _a : 0)) - 1;
+                item.rating_0_count = ((_a = item.rating_0_count) !== null && _a !== void 0 ? _a : 0) - 1;
                 break;
             case 1:
-                item.rating_1_count = (_b = item.rating_1_count, (_b !== null && _b !== void 0 ? _b : 0)) - 1;
+                item.rating_1_count = ((_b = item.rating_1_count) !== null && _b !== void 0 ? _b : 0) - 1;
                 break;
             case 2:
-                item.rating_2_count = (_c = item.rating_2_count, (_c !== null && _c !== void 0 ? _c : 0)) - 1;
+                item.rating_2_count = ((_c = item.rating_2_count) !== null && _c !== void 0 ? _c : 0) - 1;
                 break;
             case 3:
-                item.rating_3_count = (_d = item.rating_3_count, (_d !== null && _d !== void 0 ? _d : 0)) - 1;
+                item.rating_3_count = ((_d = item.rating_3_count) !== null && _d !== void 0 ? _d : 0) - 1;
                 break;
             case 4:
-                item.rating_4_count = (_e = item.rating_4_count, (_e !== null && _e !== void 0 ? _e : 0)) - 1;
+                item.rating_4_count = ((_e = item.rating_4_count) !== null && _e !== void 0 ? _e : 0) - 1;
                 break;
             case 5:
-                item.rating_5_count = (_f = item.rating_5_count, (_f !== null && _f !== void 0 ? _f : 0)) - 1;
+                item.rating_5_count = ((_f = item.rating_5_count) !== null && _f !== void 0 ? _f : 0) - 1;
                 break;
             default:
                 break;
         }
-        item.total_count = (_g = item.total_count, (_g !== null && _g !== void 0 ? _g : 0)) - 1;
+        item.total_count = ((_g = item.total_count) !== null && _g !== void 0 ? _g : 0) - 1;
     }
     composeFilter(filter) {
         filter = filter || new pip_services3_commons_node_1.FilterParams();

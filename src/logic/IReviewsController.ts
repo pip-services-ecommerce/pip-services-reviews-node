@@ -18,8 +18,11 @@ export interface IReviewsController {
 
     getProductRating(correlationId: string, productId: string,
         callback: (err: any, rating: RatingV1) => void): void;
-        
-    submitReview(correlationId: string, review: ReviewV1, 
+
+    submitReview(correlationId: string, review: ReviewV1,
+        callback: (err: any, rating: RatingV1) => void): void;
+
+    updateReview(correlationId: string, review: ReviewV1,
         callback: (err: any, rating: RatingV1) => void): void;
 
     reportHelpful(correlationId: string, reviewId: string, partyId: string,
@@ -27,7 +30,7 @@ export interface IReviewsController {
 
     reportAbuse(correlationId: string, reviewId: string, partyId: string,
         callback: (err: any, review: ReviewV1) => void): void;
-            
+
     deleteReviewById(correlationId: string, reviewId: string,
         callback: (err: any, rating: RatingV1) => void): void;
 }

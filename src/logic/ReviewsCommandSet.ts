@@ -27,6 +27,7 @@ export class ReviewsCommandSet extends CommandSet {
         this.addCommand(this.makeGetPartyReviewCommand());
         this.addCommand(this.makeGetProductRatingCommand());
         this.addCommand(this.makeSubmitReviewCommand());
+        this.addCommand(this.makeUpdateReviewCommand());
         this.addCommand(this.makeReportHelpfulCommand());
         this.addCommand(this.makeReportAbuseCommand());
 		this.addCommand(this.makeDeleteReviewByIdCommand());
@@ -92,6 +93,18 @@ export class ReviewsCommandSet extends CommandSet {
             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
                 let review = args.get("review");
                 this._logic.submitReview(correlationId, review, callback);
+            }
+		);
+    }
+    
+    private makeUpdateReviewCommand(): ICommand {
+		return new Command(
+			"update_review",
+			new ObjectSchema(true)
+				.withRequiredProperty('review', new ReviewV1Schema()),
+            (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+                let review = args.get("review");
+                this._logic.updateReview(correlationId, review, callback);
             }
 		);
 	}

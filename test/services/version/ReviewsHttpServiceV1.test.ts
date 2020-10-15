@@ -60,6 +60,8 @@ suite('ReviewsHttpServiceV1', () => {
 
     test('CRUD Operations', (done) => {
 
+        let review1:ReviewV1;
+
         async.series([
             // Create one Review
             (callback) => {
@@ -100,6 +102,7 @@ suite('ReviewsHttpServiceV1', () => {
 
                         assert.isObject(page);
                         assert.lengthOf(page.data, 2);
+                        review1 = page.data[0];
 
                         callback();
                     }
@@ -155,6 +158,46 @@ suite('ReviewsHttpServiceV1', () => {
                         assert.isUndefined(rating.rating_4_count);
                         assert.isUndefined(rating.rating_5_count);
                         assert.equal(rating.total_count, 2);
+
+                        callback();
+                    }
+                );
+            },
+            // Update Review
+            (callback) => {
+                review1.rating = 5;
+                review1.testimonial = "Update Test msg";
+                rest.post('/v1/reviews/update_review',
+                    {
+                        review: review1
+                    },
+                    (err, req, res, rating) => {
+                        assert.isNull(err);
+
+                        assert.isObject(rating);
+                        assert.equal(rating.rating_0_count, 0);
+                        assert.isUndefined(rating.rating_1_count);
+                        assert.isUndefined(rating.rating_2_count);
+                        assert.equal(rating.rating_3_count, 1);
+                        assert.isUndefined(rating.rating_4_count);
+                        assert.equal(rating.rating_5_count, 1);
+                        assert.equal(rating.total_count, 2);
+
+                        callback();
+                    }
+                );
+            },
+            // Get Review by id
+            (callback) => {
+                rest.post('/v1/reviews/get_review_by_id',
+                    {
+                        review_id: review1.id
+                    },
+                    (err, req, res, review) => {
+                        assert.isNull(err);
+
+                        assert.isObject(review);
+                        TestModel.assertEqualReviewV1(review, review1);
 
                         callback();
                     }

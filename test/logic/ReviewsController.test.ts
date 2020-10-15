@@ -1,5 +1,6 @@
 let async = require('async');
 let assert = require('chai').assert;
+let _ = require('lodash');
 
 import { ConfigParams, IdGenerator } from 'pip-services3-commons-node';
 import { Descriptor } from 'pip-services3-commons-node';
@@ -47,6 +48,7 @@ suite('ReviewsController', () => {
     });
 
     test('CRUD Operations', (done) => {
+        let review1: ReviewV1;
         async.series([
             // Create one Review
             (callback) => {
@@ -88,6 +90,7 @@ suite('ReviewsController', () => {
 
                         assert.isObject(page);
                         assert.lengthOf(page.data, 2);
+                        review1 = _.clone(page.data[0]);
 
                         callback();
                     }
@@ -145,6 +148,47 @@ suite('ReviewsController', () => {
                     }
                 );
             },
+
+            // Update review
+            (callback) => {
+                review1.rating = 5;
+                review1.testimonial = "Update Test msg";
+                controller.updateReview(
+                    null,
+                    review1,
+                    (err, rating) => {
+                        assert.isNull(err);
+
+                        assert.isObject(rating);
+                        assert.equal(rating.rating_0_count, 0);
+                        assert.isUndefined(rating.rating_1_count);
+                        assert.isUndefined(rating.rating_2_count);
+                        assert.equal(rating.rating_3_count, 1);
+                        assert.isUndefined(rating.rating_4_count);
+                        assert.equal(rating.rating_5_count, 1);
+                        assert.equal(rating.total_count, 2);
+
+                        callback();
+                    }
+                );
+            },
+            // Get Review by id
+            (callback) => {
+                controller.getReviewById(
+                    null,
+                    review1.id,
+                    (err, review) => {
+                        assert.isNull(err);
+
+                        assert.isObject(review);
+                        TestModel.assertEqualReviewV1(review, review1);
+
+                        callback();
+                    }
+                );
+            },
+
+
             // Report Review helpful
             (callback) => {
                 controller.reportHelpful(

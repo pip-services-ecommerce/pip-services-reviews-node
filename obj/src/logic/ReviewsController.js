@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReviewsController = void 0;
 let async = require('async');
 const pip_services3_commons_node_1 = require("pip-services3-commons-node");
 const pip_services3_commons_node_2 = require("pip-services3-commons-node");
@@ -48,12 +49,48 @@ class ReviewsController {
     submitReview(correlationId, review, callback) {
         var _a;
         let rating;
-        review.id = (_a = review.id, (_a !== null && _a !== void 0 ? _a : pip_services3_commons_node_1.IdGenerator.nextLong()));
+        review.id = (_a = review.id) !== null && _a !== void 0 ? _a : pip_services3_commons_node_1.IdGenerator.nextLong();
         review.create_time = new Date(Date.now());
         review.update_time = new Date(Date.now());
         async.series([
             (callback) => {
                 this._reviewsPersistence.create(correlationId, review, (err, review) => {
+                    callback(err);
+                });
+            },
+            (callback) => {
+                this._ratingsPersistence.increment(correlationId, review.product_id, review.rating, (err, data) => {
+                    rating = data;
+                    callback(err);
+                });
+            },
+        ], (err) => {
+            callback(err, rating);
+        });
+    }
+    updateReview(correlationId, review, callback) {
+        let oldRating = 0;
+        let rating;
+        async.series([
+            (callback) => {
+                this._reviewsPersistence.getOneById(correlationId, review.id, (err, data) => {
+                    if (err != null || data == null) {
+                        err = new pip_services3_commons_node_1.NotFoundException(correlationId, 'NOT_FOUND', 'Review ' + review.id + ' was not found');
+                        callback(err);
+                        return;
+                    }
+                    oldRating = data.rating;
+                    callback(err);
+                });
+            },
+            (callback) => {
+                this._ratingsPersistence.decrement(correlationId, review.product_id, oldRating, (err, data) => {
+                    callback(err);
+                });
+            },
+            (callback) => {
+                review.update_time = new Date(Date.now());
+                this._reviewsPersistence.update(correlationId, review, (err, data) => {
                     callback(err);
                 });
             },
@@ -79,7 +116,7 @@ class ReviewsController {
             (callback) => {
                 var _a;
                 review.update_time = new Date(Date.now());
-                review.helpful_count = (_a = review.helpful_count, (_a !== null && _a !== void 0 ? _a : 0)) + 1;
+                review.helpful_count = ((_a = review.helpful_count) !== null && _a !== void 0 ? _a : 0) + 1;
                 this._reviewsPersistence.update(correlationId, review, (err, data) => {
                     callback(err);
                 });
@@ -100,7 +137,7 @@ class ReviewsController {
             (callback) => {
                 var _a;
                 review.update_time = new Date(Date.now());
-                review.abuse_count = (_a = review.abuse_count, (_a !== null && _a !== void 0 ? _a : 0)) + 1;
+                review.abuse_count = ((_a = review.abuse_count) !== null && _a !== void 0 ? _a : 0) + 1;
                 this._reviewsPersistence.update(correlationId, review, (err, data) => {
                     callback(err);
                 });
@@ -120,7 +157,7 @@ class ReviewsController {
                 });
             },
             (callback) => {
-                this._ratingsPersistence.increment(correlationId, review.product_id, review.rating, (err, data) => {
+                this._ratingsPersistence.decrement(correlationId, review.product_id, review.rating, (err, data) => {
                     rating = data;
                     callback(err);
                 });
